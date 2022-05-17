@@ -1,1 +1,0 @@
-linearsearch(a, size, element);
