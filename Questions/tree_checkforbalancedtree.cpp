@@ -33,17 +33,33 @@ node* buildTree(int data){
     return root;
 }
 
-int maxDepth(node* root) {
+int height(node* root) {
         if(root == nullptr){
             return 0;
         }
         
-        int left = maxDepth(root -> left);
-        int right = maxDepth(root -> right);
+        int left = height(root -> left);
+        int right = height(root -> right);
         
         int ans = max(left , right) + 1;
-        return ans;
+    return ans;    
+}
+
+bool isBalanced(node* root){
+    if(root == nullptr){
+        return true;
     }
+
+    bool left = isBalanced(root->left);
+    bool right = isBalanced(root->right);
+
+    bool diff = abs(height(root->left) - height(root->right))<=1;
+
+    if(left && right && diff){
+        return true;
+    }
+    return false;
+}
 
 int main(){
     node * root = nullptr;
@@ -54,7 +70,11 @@ int main(){
 
     root = buildTree(rdata);
 
-    cout<<"Height of tree is: "<<maxDepth(root)<<endl;
+    if(isBalanced(root))
+        cout<<"True"<<endl;
+    else
+        cout<<"False"<<endl;
+
     
 
 

@@ -45,6 +45,40 @@ int maxDepth(node* root) {
         return ans;
     }
 
+//Approach 1 time complexity O(n^2)
+int diameterOfBinaryTree(node* root) {
+    if(root == nullptr){
+        return 0;
+    }
+    int opt1 = diameterOfBinaryTree(root -> left);
+    int opt2 = diameterOfBinaryTree(root -> right);
+    int opt3 = maxDepth(root->left) + 1 + maxDepth(root->right);
+
+    int ans = max(opt1 , max(opt2 , opt3));
+    
+    return ans;
+}
+
+//Approach 2 time complexity O(n)
+pair<int,int> diameterFast(node* root){
+    if(root == nullptr){
+        pair<int,int> p = make_pair(0,0);
+        return p;
+    }
+
+    pair<int,int> left = diameterFast(root->left);
+    pair<int,int> right = diameterFast(root->right);
+
+    int opt1 = left.first;
+    int opt2 = right.first;
+    int opt3 = left.second + right.second + 1;
+
+    pair<int,int> ans;
+    ans.first = max(opt1 , max(opt2 , opt3));
+    ans.second = max(left.second , right.second) + 1;
+    return ans;
+}
+
 int main(){
     node * root = nullptr;
     
@@ -55,6 +89,10 @@ int main(){
     root = buildTree(rdata);
 
     cout<<"Height of tree is: "<<maxDepth(root)<<endl;
+
+    cout<<"Width of the tree is(O(n^2)): "<<diameterOfBinaryTree(root)<<endl;
+
+    cout<<"Width of the tree is(O(n)): "<<diameterFast(root).first<<endl;
     
 
 
