@@ -92,33 +92,69 @@ void inOrderTraversal(node* root){
     inOrderTraversal(root->right);
 }
 
-int main(){
-    node * root;
-    cout<<"Enter data for root: ";
+//creation of tree by level order traversing
+node* bulidFromLOT(node* &root){
+    queue<node*> q;
+    cout<<"Enter data for the root: "<<endl;
     int rdata;
     cin>>rdata;
+    root = new node(rdata);
+    q.push(root);
 
-    root = buildTree(rdata);
+    while(!q.empty()){
+        node* temp = q.front();
+        q.pop();
+
+        cout<<"Enter data for left of "<<temp->data<<": ";
+        int ldata;
+        cin>>ldata;
+
+        if(ldata != -1){
+            temp->left = new node(ldata);
+            q.push(temp->left);
+        }
+
+        cout<<"Enter data for right of "<<temp->data<<": ";
+        int rdata;
+        cin>>rdata; 
+
+        if(rdata != -1){
+            temp->right = new node(rdata);
+            q.push(temp->right);
+        }
+    }
+}
+
+int main(){
+    node * root = nullptr;
+    
+    bulidFromLOT(root);
+    // cout<<"Enter data for root: ";
+    // int rdata;
+    // cin>>rdata;
+
+    // root = buildTree(rdata);
 
 
-    //levelOrderTraversing
+    // //levelOrderTraversing
     cout << "Printing the level order traversal output " << endl;
     levelOrderTraversal(root);
 
-    //pre Order Traversal
-    cout << "Printing the pre order traversal output " << endl;
-    preOrderTraversal(root);
-    cout<<endl;
+    // //pre Order Traversal
+    // cout << "Printing the pre order traversal output " << endl;
+    // preOrderTraversal(root);
+    // cout<<endl;
 
-    //post Order Traversal
-    cout << "Printing the post order traversal output " << endl;
-    postOrderTraversal(root);
-    cout<<endl;
+    // //post Order Traversal
+    // cout << "Printing the post order traversal output " << endl;
+    // postOrderTraversal(root);
+    // cout<<endl;
 
-    //inorder Traversal
-    cout << "Printing the inorder traversal output " << endl;
-    inOrderTraversal(root);
-    cout<<endl;
+    // //inorder Traversal
+    // cout << "Printing the inorder traversal output " << endl;
+    // inOrderTraversal(root);
+    // cout<<endl;
+
 
     return 0;
 }
