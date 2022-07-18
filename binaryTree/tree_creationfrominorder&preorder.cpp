@@ -13,44 +13,53 @@ struct node{
     }
 };
 
-int findposition(vector<int> a, int ele, int n){
-    for(int i=0; i<n; i++){
-        if(a[i] == ele){
+int findPosition(vector<int> inorder, int element, int start, int end){
+    for(int i=start; i<=end; i++){
+        if(inorder[i] == element)
             return i;
-        }
     }
     return -1;
 }
-
-node* solve(vector<int> preorder, vector<int> inorder, int index, int inorderstart, int inorderend, int n){
-    //base case
-    if(index >= n || inorderstart >= inorderend){
-        return nullptr;
+    
+node* solve(vector<int> preorder, vector<int> inorder, int index, int start, int end){
+        
+    if(start > end)     return nullptr;
+        
+    int curr = preorder[index];
+    index++;
+    node* root = new node(curr);
+        
+    if(start == end){
+        return root;
     }
-
-    int element = preorder[index++];
-    node* root = new node(element);
-    int position = findposition(inorder, element, n);
-
-    //recursion
-    root -> left = solve(preorder, inorder, index, inorderstart, position-1, inorder.size());
-    root -> left = solve(preorder, inorder, index, position+1, inorderend, inorder.size());
-
+        
+    int position = findPosition(inorder, curr, start, end);
+        
+    root -> left = solve(preorder, inorder, index, start, position-1);
+    root -> right = solve(preorder, inorder, index, position+1, end);
+        
     return root;
 }
-
-node* makeTree(vector<int> preorder, vector<int> inorder){
-    int index = 0;
-    int inorderstart = 0;
-    int inorderend = inorder.size()-1;
-    node* root = solve(preorder, inorder, index, inorderstart, inorderend, inorder.size());
+    
+node* buildTree(vector<int>& preorder, vector<int>& inorder) {
+    static int index = 0;
+        
+    int start = 0;
+    int end = inorder.size() - 1;
+        
+    node* ans = solve(preorder, inorder, index, start, end);
+        
+    return ans;
 }
 
-void postorder(node* root){
-    if(!root)   return;
+void postOrderTraversal(node* root){
+    if(root == nullptr){
+        return;
+    }
 
-    postorder(root -> left);
-    postorder(root -> right);
+    postOrderTraversal(root->left);
+
+    postOrderTraversal(root->right);
 
     cout<<root->data<<" ";
 }
@@ -60,9 +69,9 @@ int main()
     vector<int> preorder = {1,6,7,8};
     vector<int> inorder = {1,6,8,7};
 
-    node* root = makeTree(preorder, inorder);
+    node* root = buildTree(preorder, inorder);
 
-    postorder(root);
+    postOrderTraversal(root);
 
     return 0;
 }
