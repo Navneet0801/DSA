@@ -21,12 +21,12 @@ int findPosition(vector<int> inorder, int element, int start, int end){
     return -1;
 }
     
-node* solve(vector<int> preorder, vector<int> inorder, int index, int start, int end){
+node* solve(vector<int> postorder, vector<int> inorder, int index, int start, int end){
         
     if(start > end)     return nullptr;
         
-    int curr = preorder[index];
-    index++;
+    int curr = postorder[index];
+    index--;
     node* root = new node(curr);
         
     if(start == end){
@@ -35,43 +35,43 @@ node* solve(vector<int> preorder, vector<int> inorder, int index, int start, int
         
     int position = findPosition(inorder, curr, start, end);
         
-    root -> left = solve(preorder, inorder, index, start, position-1);
-    root -> right = solve(preorder, inorder, index, position+1, end);
+    root -> left = solve(postorder, inorder, index, start, position-1);
+    root -> right = solve(postorder, inorder, index, position+1, end);
         
     return root;
 }
     
-node* buildTree(vector<int>& preorder, vector<int>& inorder) {
-    static int index = 0;
+node* buildTree(vector<int>& postorder, vector<int>& inorder) {
+    static int index = inorder.size() - 1;
         
     int start = 0;
     int end = inorder.size() - 1;
         
-    node* ans = solve(preorder, inorder, index, start, end);
+    node* ans = solve(postorder, inorder, index, start, end);
         
     return ans;
 }
 
-void postOrderTraversal(node* root){
+void preOrderTraversal(node* root){
     if(root == nullptr){
         return;
     }
 
-    postOrderTraversal(root->left);
-
-    postOrderTraversal(root->right);
-
     cout<<root->data<<" ";
+
+    preOrderTraversal(root->left);
+
+    preOrderTraversal(root->right);
 }
 
 int main()
 {
-    vector<int> preorder = {1,6,7,8};
+    vector<int> postorder = {8,7,6,1};
     vector<int> inorder = {1,6,8,7};
 
-    node* root = buildTree(preorder, inorder);
+    node* root = buildTree(postorder, inorder);
 
-    postOrderTraversal(root);
+    preOrderTraversal(root);
 
     return 0;
 }
