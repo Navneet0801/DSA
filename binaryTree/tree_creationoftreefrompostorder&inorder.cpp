@@ -34,9 +34,9 @@ node* solve(vector<int> postorder, vector<int> inorder, int index, int start, in
     }
         
     int position = findPosition(inorder, curr, start, end);
-        
-    root -> left = solve(postorder, inorder, index, start, position-1);
+    
     root -> right = solve(postorder, inorder, index, position+1, end);
+    root -> left = solve(postorder, inorder, index, start, position-1);
         
     return root;
 }
