@@ -70,7 +70,7 @@ string reverseWordString(string s){
 }
 
 int main(){
-    string s = "the sky is blue";
+    string s = "you are my body builder";
 
     string rs = reverseWordString(s);
 
